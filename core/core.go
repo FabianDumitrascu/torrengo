@@ -107,7 +107,10 @@ func Fetch(ctx context.Context, url string, cookies []*http.Cookie) (string, []*
 	var newCDPCookies []*network.Cookie
 	var newCookies []*http.Cookie
 
-	ctx, cancel := chromedp.NewContext(ctx)
+	allocatorCtx, cancel := chromedp.NewRemoteAllocator(context.Background(), "http://127.0.0.1:9222")
+	defer cancel()
+
+	ctx, cancel = chromedp.NewContext(allocatorCtx)
 	defer cancel()
 
 	// TODO(juliensalinas): check status code of the response
