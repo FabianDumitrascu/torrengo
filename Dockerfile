@@ -12,4 +12,5 @@ RUN apk add --no-cache chromium
 RUN ln -s /usr/bin/chromium-browser /usr/bin/google-chrome
 WORKDIR /app
 COPY --from=builder /app/torrengo .
+WORKDIR /downloads
 ENTRYPOINT ["/bin/sh", "-c", "chromium-browser --headless --no-sandbox --disable-gpu --remote-debugging-port=9222 2>/dev/null & sleep 2 && /app/torrengo \"$@\"", "sh"]
