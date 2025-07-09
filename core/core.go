@@ -174,6 +174,10 @@ func convertCookies(cookies []*network.Cookie) []*http.Cookie {
 // time it failed with "invalid parameter -32602 for some reason".
 func setCookies(ctx context.Context, cookies []*http.Cookie) chromedp.Action {
 	return chromedp.ActionFunc(func(ctx context.Context) error {
+		if len(cookies) == 0 {
+			return nil
+		}
+
 		for _, cookie := range cookies {
 			expiry := cdp.TimeSinceEpoch(cookieExpiry)
 			err := network.SetCookie(cookie.Name, cookie.Value).

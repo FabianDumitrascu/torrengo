@@ -12,7 +12,4 @@ RUN apk add --no-cache chromium
 RUN ln -s /usr/bin/chromium-browser /usr/bin/google-chrome
 WORKDIR /app
 COPY --from=builder /app/torrengo .
-COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
-ENTRYPOINT ["./entrypoint.sh"]
-CMD ["./torrengo"]
+ENTRYPOINT ["/bin/sh", "-c", "chromium-browser --headless --no-sandbox --remote-debugging-port=9222 & tail -f /dev/null"]
